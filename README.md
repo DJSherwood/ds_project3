@@ -8,11 +8,11 @@ Libraries used:
 
 The motivation for this project is to classify text messages into one or more of 36 categories. The data is provided by Figure8. There are three separate components to this project: 
 
-1. ETL with Pandas. `disaster_messages.csv` and `disaster_categories.csv` are cleaned, merged, and saved into a sqllite database.  
+1. ETL with Pandas. `disaster_messages.csv` and `disaster_categories.csv` are cleaned, merged, and saved into a sqllite database. This process is encapsulated by `process_data.py`  
 
-2. Machine learning with scikit-learn. Data from the database is loaded, transformed through a natural language processing pipeline, and fitted to a tuned `RandomForestClassifier`. The model is saved as a pickle. 
+2. Machine learning with scikit-learn. Data from the database is loaded, transformed through a natural language processing pipeline, and fitted to a tuned `RandomForestClassifier`. The model is saved as a pickle. This process is encapsulated by `train_classifier.py`
 
-3. Web dashboard with Flask. Flask loads the pickled classifier and generates predictions. The results are displayed in a plotly visualization. 
+3. Web dashboard with Flask. Flask loads the pickled classifier and generates predictions. The results are displayed in a plotly visualization. The relevant file is `run.py`. 
 
 # Installation 
  

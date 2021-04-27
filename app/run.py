@@ -1,3 +1,4 @@
+import numpy as np
 import json
 import plotly
 import pandas as pd
@@ -42,6 +43,10 @@ def index():
     # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
+
+    # extracting data for my own visual
+    category_frequency = df.iloc[:,4:].values.sum(axis=0)/np.sum(df.iloc[:,4:].values.sum(axis=0)) * 100.0
+    category_names = df.columns[4:]
     
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
@@ -61,6 +66,26 @@ def index():
                 },
                 'xaxis': {
                     'title': "Genre"
+                }
+            }
+        },
+        {
+            'data': [
+                Pie(
+                    labels=category_names,
+                    values=category_frequency,
+                    textposition='inside',
+                    hole=0.8
+                ) 
+            ],
+
+            'layout': {
+                'title': 'Distribution of Message Categories',
+                'yaxis': {
+                    'title': 'Frequency'
+                }, 
+                'xaxis': {
+                    'title': 'Category'
                 }
             }
         }

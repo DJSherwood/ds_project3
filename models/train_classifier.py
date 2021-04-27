@@ -21,6 +21,11 @@ from sklearn.metrics import classification_report
 import pickle
 
 def load_data(database_filepath):
+    '''
+    Creates a dataframe from the existing database to train the classifier.
+    INPUT: database_filepath
+    OUTPUT: numpy array of predictors, numpy array of targets, list of categories
+    '''
     # load engine
     engine = create_engine('sqlite:///' + str(database_filepath))
     # load dataset
@@ -28,13 +33,18 @@ def load_data(database_filepath):
     # create X,Y
     X = df[['message']]
     X = X.message.tolist()
-    Y = df.drop(columns=['id','message','original','genre'])
+    Y = df.drop(columns=['id','message','original','genre','child_alone'])
     # create category name variable
     category_names = Y.columns
     
     return X, Y, category_names
 
 def tokenize(text):
+    '''
+    Creates tokens from list element ( string ) 
+    INPUT: list of strings
+    OUTPUT: array of tokens
+    '''
     stop_words = stopwords.words("english")
     lemmatizer = WordNetLemmatizer()
     # normalize case and remove punctuation
@@ -47,15 +57,23 @@ def tokenize(text):
     return tokens
 
 def build_model():
+    '''
+    Creates pipeline object with hyperparameters tuned via GridSearchCV
+    '''
     pipeline = Pipeline([
         ('vectorize', CountVectorizer(tokenizer=tokenize)),
-        ('tfidf', TfidfTransformer(smooth_idf=False)),
-        ('classify', MultiOutputClassifier(RandomForestClassifier(max_depth=5)))
+        ('tfidf', TfidfTransformer(smooth_idf=True)),
+        ('classify', MultiOutputClassifier(RandomForestClassifier(max_depth=15)))
     ])
 
     return pipeline
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    '''
+    Prints the recall, precision, F1 score for each category
+    INPUT: the fitted model object, testing predictors and testing target, and list of categoires
+    OUTPUT: print to screen
+    '''
     # generate predictions
     Y_pred = model.predict(X_test)
     # find the number of columns in prediction
@@ -70,6 +88,11 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 
 def save_model(model, model_filepath):
+    '''
+    Saves model as a binary to specified filepath. 
+    INPUT: model object, string denoting filepath to save model
+    OUTPUT: None
+    '''
     with open(model_filepath, 'wb') as pickle_file:
         pickle.dump(model, pickle_file)
 

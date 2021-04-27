@@ -4,6 +4,11 @@ import pandas as pd
 
 
 def load_data(messages_filepath, categories_filepath):
+    '''
+    Creates a dataframe by merging the message and category data together.
+    INTPUT: message data location (string) and category data location (string)
+    OUTPUT: pandas dataframe
+    '''
     # load messages into dataframe
     messages = pd.read_csv(messages_filepath)
     # load categories into dataframe
@@ -21,6 +26,11 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
+    '''
+    Cleans the dataframe. 
+    INPUT: pandas dataframe
+    OUTPUT: pandas dataframe
+    '''
     # abbreviate category names
     categories = df['categories'].str.split(';',expand=True)
     row = categories.iloc[0]
@@ -44,6 +54,11 @@ def clean_data(df):
     return df
 
 def save_data(df, database_filename):
+    ''' 
+    Create a database to store the pandas datframe into.
+    INPUT: pandas dataframe
+    OUTPUT: sqlite3 database ( default table name is DisasterResponse ) 
+    '''
     engine = create_engine('sqlite:///' + str(database_filename))
     df.to_sql('DisasterResponse', engine, index=False)  
 
