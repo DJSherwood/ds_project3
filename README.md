@@ -42,7 +42,7 @@ The folder structure is as follows:
 
 (from Udacity's project workspace )
 1. To run the ETL pipeline, type: 
-    `python data/process_data.py data_disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
+    `python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
 2. To run the ML pipeline that trains cnd saves a classifier, type: 
     `python models/train_classifier.py data/DisasterRepsonse.db models/classifier.pkl`
 3. To run web app, type: 
