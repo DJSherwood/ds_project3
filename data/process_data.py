@@ -50,6 +50,10 @@ def clean_data(df):
     df = pd.concat([df, categories], axis=1)
     # drop duplicates
     df = df.drop_duplicates()
+    # convert all indicator columns to integer
+    df = df.astype({ col_name : 'int64' for col_name in df.columns[4:]})
+    # the 'relevant' category has values of '2' for some reason
+    df = df.replace({'related' : 2}, 1)
     
     return df
 
@@ -60,7 +64,7 @@ def save_data(df, database_filename):
     OUTPUT: sqlite3 database ( default table name is DisasterResponse ) 
     '''
     engine = create_engine('sqlite:///' + str(database_filename))
-    df.to_sql('DisasterResponse', engine, index=False)  
+    df.to_sql('DisasterResponse', engine, index=False, if_exists='replace')  
 
 
 def main():
